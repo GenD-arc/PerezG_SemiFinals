@@ -19,10 +19,10 @@ const mysql = require('mysql')
 //connection to mysql
 
 const connection = mysql.createConnection({
-    host:"localhost",
-    user:"root",
-    password:"",
-    database:"employee"
+    host:"bxdrkxy24wkvrbyclpbt-mysql.services.clever-cloud.com",
+    user:"uateqlsfqbji6hpv",
+    password:"bWCnPfFeIHaBGsEGWe5b",
+    database:"bxdrkxy24wkvrbyclpbt"
 })
 
 //initilization of connection
