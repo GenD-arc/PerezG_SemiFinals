@@ -19,10 +19,10 @@ const mysql = require('mysql')
 //connection to mysql
 
 const connection = mysql.createConnection({
-    host:"bxdrkxy24wkvrbyclpbt-mysql.services.clever-cloud.com",
-    user:"uateqlsfqbji6hpv",
-    password:"bWCnPfFeIHaBGsEGWe5b",
-    database:"bxdrkxy24wkvrbyclpbt"
+    host:"localhost",
+    user:"root",
+    password:"",
+    database:"products"
 })
 
 //initilization of connection
@@ -33,7 +33,7 @@ app.get("/GET/products", (req,res) => {
 
     //create a query
 
-    connection.query("SELECT * FROM userdata",(err, row, fields) =>{
+    connection.query("SELECT * FROM product_info",(err, row, fields) =>{
         // checking error
         if(err) throw err;
         // response key value pair
@@ -43,13 +43,11 @@ app.get("/GET/products", (req,res) => {
 
 //req to frontend Read
 
-app.get("/GET/products:id", (req,res) =>{
+app.get("/GET/products/:id", (req,res) =>{
 
-    const id =  req.params.id // 60
+    const id =  req.params.id
 
-  //  res.send(id)
-
-  connection.query(`SELECT * FROM userdata WHERE id  = ${id}`, (err, rows) => {
+  connection.query(`SELECT * FROM product_info WHERE id  = ${id}`, (err, rows) => {
 
     if (err) throw err;
 
@@ -66,10 +64,10 @@ app.get("/GET/products:id", (req,res) =>{
 app.use(express.urlencoded({extended: false}))
 
 app.post("/POST/products", (req,res) => {
-    //const fname = req.body.fname, lname = req.body.lname, email = req.body.email, gender = req.body.gender
-    const { fname, lname, email, gender } = req.body
 
-    connection.query(`INSERT INTO userdata (first_name, last_name, email, gender) VALUE ('${fname}', '${lname}'  , '${email}', '${gender}')`, (err, rows, fields) => {
+    const { itemName, unitPrice, quantity, supplier } = req.body
+
+    connection.query(`INSERT INTO product_info (itemName, unitPrice, quantity, supplier) VALUE ('${itemName}', '${unitPrice}'  , '${quantity}', '${supplier}')`, (err, rows, fields) => {
 
         if(err) throw err
 
@@ -79,57 +77,6 @@ app.post("/POST/products", (req,res) => {
 
 
 
-
-// PUT - UPDATE
-/*
-app.use(express.urlencoded({extended: false}))
-
-app.put("/api/members", (req,res) => {
-
-    const { fname, lname, email, gender,id } = req.body
-
-    connection.query(`UPADATE userdata  SET first_name='${fname}', last_name= '${lname}', email='${email}', gender='${gender}' WHERE id = '${id}' `,  (err, rows, fields) => {
-
-        if(err) throw err
-
-        res.json({msg: `Saksespuli apdeytid`})
-    })
-}) 
-
-*/
-
-
-    app.use(express.urlencoded({extended: false}));
-
-    app.put("/api/members", (req, res) => {
-
-        const { fname, lname, email, gender, id } = req.body
-
-      connection.query(
-
-        `UPDATE userdata SET first_name='${fname}', last_name='${lname}', email='${email}', gender='${gender}' WHERE id='${id}'`,
-
-        (err, rows, fields) => {
-
-          if (err) throw err;
-
-          res.json({ msg: `Successfully updated!` });
-        }
-      );
-    });
-
-
 app.listen(port, () =>{
     console.log(`Si server ay tumatakbo ${port}`)
-})
-
-app.use(express.urlencoded({extended: false}))
-
-app.delete("/api/members",  (req,res) => {
-
-    const id =  req.body.id
-    connection.query(`DELETE FROM userdata WHERE id = '${id}'`, (err, rows, fields) => {
-        if (err) throw err;
-        res.json({ msg: `Saksespuli dileytid`});
-    })
 })
